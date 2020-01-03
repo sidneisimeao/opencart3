@@ -1,6 +1,8 @@
 <?php
-class ControllerProductSearch extends Controller {
-	public function index() {
+class ControllerProductSearch extends Controller
+{
+	public function index()
+	{
 		$this->load->language('product/search');
 
 		$this->load->model('catalog/category');
@@ -60,7 +62,7 @@ class ControllerProductSearch extends Controller {
 		}
 
 		if (isset($this->request->get['limit'])) {
-			$limit = (int)$this->request->get['limit'];
+			$limit = (int) $this->request->get['limit'];
 		} else {
 			$limit = $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit');
 		}
@@ -195,26 +197,29 @@ class ControllerProductSearch extends Controller {
 					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
 				}
 
+				$showPriceOnlyForLoggedIn = true;
+
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
+					$showPriceOnlyForLoggedIn = false;
 					$price = false;
 				}
 
-				if ((float)$result['special']) {
+				if ((float) $result['special']) {
 					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
 					$special = false;
 				}
 
 				if ($this->config->get('config_tax')) {
-					$tax = $this->currency->format((float)$result['special'] ? $result['special'] : $result['price'], $this->session->data['currency']);
+					$tax = $this->currency->format((float) $result['special'] ? $result['special'] : $result['price'], $this->session->data['currency']);
 				} else {
 					$tax = false;
 				}
 
 				if ($this->config->get('config_review_status')) {
-					$rating = (int)$result['rating'];
+					$rating = (int) $result['rating'];
 				} else {
 					$rating = false;
 				}
@@ -229,7 +234,9 @@ class ControllerProductSearch extends Controller {
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
-					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url)
+					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url),
+					'showPriceOnlyForLoggedIn' => $showPriceOnlyForLoggedIn,
+					'loginToBuy' => $this->url->link('account/login'),
 				);
 			}
 
@@ -353,7 +360,7 @@ class ControllerProductSearch extends Controller {
 
 			sort($limits);
 
-			foreach($limits as $value) {
+			foreach ($limits as $value) {
 				$data['limits'][] = array(
 					'text'  => $value,
 					'value' => $value,
