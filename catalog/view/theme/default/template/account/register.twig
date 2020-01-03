@@ -298,13 +298,13 @@
             <input type="checkbox" name="agree" value="1" />
             {% endif %}
             &nbsp;
-            <input type="submit" value="{{ button_continue }}" class="btn btn-primary" />
+            <input type="submit" id="btn-receita-ws" value="{{ button_continue }}" class="btn btn-primary" />
           </div>
         </div>
         {% else %}
         <div class="buttons">
           <div class="pull-right">
-            <input type="submit" value="{{ button_continue }}" class="btn btn-primary" />
+            <input type="submit" id="btn-receita-ws" value="{{ button_continue }}" class="btn btn-primary" />
           </div>
         </div>
         {% endif %}
@@ -430,4 +430,23 @@
     pickTime: true
   });
 //--></script>
+<script type="text/javascript"><!--
+
+$( "form" ).submit(function( event ) {
+  event.preventDefault();
+
+   var cnpj = $("input[type=text][placeholder='CNPJ']").val();
+
+    $.ajax({
+       dataType:'jsonp',
+       contentType: 'application/json',
+        crossOrigin: true,
+        url: "https://www.receitaws.com.br/v1/cnpj/"+cnpj,
+        success: function(data) {
+            $( "#input-firstname" ).val( data.nome );
+        }
+    });
+});
+//--></script>
+
 {{ footer }}

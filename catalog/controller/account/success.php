@@ -1,6 +1,8 @@
 <?php
-class ControllerAccountSuccess extends Controller {
-	public function index() {
+class ControllerAccountSuccess extends Controller
+{
+	public function index()
+	{
 		$this->load->language('account/success');
 
 		$this->document->setTitle($this->language->get('heading_title'));
