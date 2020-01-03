@@ -1,11 +1,13 @@
 <?php
-class ControllerExtensionModuleCarousel extends Controller {
-	public function index($setting) {
+class ControllerExtensionModuleCarousel extends Controller
+{
+	public function index($setting)
+	{
 		static $module = 0;
 
 		$this->load->model('design/banner');
 		$this->load->model('tool/image');
-		
+
 		$this->document->addStyle('catalog/view/javascript/jquery/swiper/css/swiper.min.css');
 		$this->document->addStyle('catalog/view/javascript/jquery/swiper/css/opencart.css');
 		$this->document->addScript('catalog/view/javascript/jquery/swiper/js/swiper.jquery.js');

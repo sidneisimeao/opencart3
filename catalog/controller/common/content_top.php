@@ -1,10 +1,12 @@
 <?php
-class ControllerCommonContentTop extends Controller {
-	public function index() {
+class ControllerCommonContentTop extends Controller
+{
+	public function index()
+	{
 		$this->load->model('design/layout');
 
 		if (isset($this->request->get['route'])) {
-			$route = (string)$this->request->get['route'];
+			$route = (string) $this->request->get['route'];
 		} else {
 			$route = 'common/home';
 		}
@@ -14,7 +16,7 @@ class ControllerCommonContentTop extends Controller {
 		if ($route == 'product/category' && isset($this->request->get['path'])) {
 			$this->load->model('catalog/category');
 
-			$path = explode('_', (string)$this->request->get['path']);
+			$path = explode('_', (string) $this->request->get['path']);
 
 			$layout_id = $this->model_catalog_category->getCategoryLayoutId(end($path));
 		}

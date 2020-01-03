@@ -1,6 +1,8 @@
 <?php
-class ControllerExtensionModuleBanner extends Controller {
-	public function index($setting) {
+class ControllerExtensionModuleBanner extends Controller
+{
+	public function index($setting)
+	{
 		static $module = 0;
 
 		$this->load->model('design/banner');

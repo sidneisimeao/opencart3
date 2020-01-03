@@ -1,6 +1,8 @@
 <?php
-class ControllerExtensionModuleFeatured extends Controller {
-	public function index($setting) {
+class ControllerExtensionModuleFeatured extends Controller
+{
+	public function index($setting)
+	{
 		$this->load->language('extension/module/featured');
 
 		$this->load->model('catalog/product');
@@ -14,7 +16,7 @@ class ControllerExtensionModuleFeatured extends Controller {
 		}
 
 		if (!empty($setting['product'])) {
-			$products = array_slice($setting['product'], 0, (int)$setting['limit']);
+			$products = array_slice($setting['product'], 0, (int) $setting['limit']);
 
 			foreach ($products as $product_id) {
 				$product_info = $this->model_catalog_product->getProduct($product_id);
@@ -26,20 +28,23 @@ class ControllerExtensionModuleFeatured extends Controller {
 						$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
 					}
 
+					$showPriceOnlyForLoggedIn = true;
+
 					if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 						$price = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 					} else {
+						$showPriceOnlyForLoggedIn = false;
 						$price = false;
 					}
 
-					if ((float)$product_info['special']) {
+					if ((float) $product_info['special']) {
 						$special = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 					} else {
 						$special = false;
 					}
 
 					if ($this->config->get('config_tax')) {
-						$tax = $this->currency->format((float)$product_info['special'] ? $product_info['special'] : $product_info['price'], $this->session->data['currency']);
+						$tax = $this->currency->format((float) $product_info['special'] ? $product_info['special'] : $product_info['price'], $this->session->data['currency']);
 					} else {
 						$tax = false;
 					}
@@ -59,7 +64,9 @@ class ControllerExtensionModuleFeatured extends Controller {
 						'special'     => $special,
 						'tax'         => $tax,
 						'rating'      => $rating,
-						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
+						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
+						'showPriceOnlyForLoggedIn' => $showPriceOnlyForLoggedIn,
+						'loginToBuy' => $this->url->link('account/login'),
 					);
 				}
 			}
