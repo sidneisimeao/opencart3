@@ -1,10 +1,12 @@
 <?php
-class ControllerExtensionModuleCategory extends Controller {
-	public function index() {
+class ControllerExtensionModuleCategory extends Controller
+{
+	public function index()
+	{
 		$this->load->language('extension/module/category');
 
 		if (isset($this->request->get['path'])) {
-			$parts = explode('_', (string)$this->request->get['path']);
+			$parts = explode('_', (string) $this->request->get['path']);
 		} else {
 			$parts = array();
 		}
@@ -35,7 +37,7 @@ class ControllerExtensionModuleCategory extends Controller {
 			if ($category['category_id'] == $data['category_id']) {
 				$children = $this->model_catalog_category->getCategories($category['category_id']);
 
-				foreach($children as $child) {
+				foreach ($children as $child) {
 					$filter_data = array('filter_category_id' => $child['category_id'], 'filter_sub_category' => true);
 
 					$children_data[] = array(
