@@ -19,7 +19,7 @@ $_['text_agree']                = 'Eu li e concordo com o contrato de <a href="%
 // Entry
 $_['entry_customer_group']      = 'Tipo de cliente';
 $_['entry_firstname']           = 'Nome';
-$_['entry_lastname']            = 'Sobrenome';
+$_['entry_lastname']            = 'Fantasia';
 $_['entry_email']               = 'E-mail';
 $_['entry_telephone']           = 'Telefone';
 $_['entry_company']             = 'Referência';
@@ -39,7 +39,7 @@ $_['entry_confirm']             = 'Repetir a senha';
 // Error
 $_['error_exists']              = 'Atenção: Este e-mail já está registrado.';
 $_['error_firstname']           = 'O nome deve ter entre 2 e 32 caracteres.';
-$_['error_lastname']            = 'O sobrenome deve ter entre 2 e 32 caracteres.';
+$_['error_lastname']            = 'O nome Fantasia deve ter entre 2 e 32 caracteres.';
 $_['error_email']               = 'O e-mail não é válido.';
 $_['error_telephone']           = 'O telefone deve ter entre 10 e 11 caracteres.';
 $_['error_custom_field']        = 'O campo %s é obrigatório.';

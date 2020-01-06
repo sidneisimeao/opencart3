@@ -1,8 +1,10 @@
 <?php
-class ControllerAccountEdit extends Controller {
+class ControllerAccountEdit extends Controller
+{
 	private $error = array();
 
-	public function index() {
+	public function index()
+	{
 		if (!$this->customer->isLogged()) {
 			$this->session->data['redirect'] = $this->url->link('account/edit', '', true);
 
@@ -17,6 +19,8 @@ class ControllerAccountEdit extends Controller {
 		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js');
 		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
 		$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+		$this->document->addScript('catalog/view/javascript/customer/Utils.js');
+		$this->document->addScript('catalog/view/javascript/jquery-mask/src/jquery.mask.js');
 
 		$this->load->model('account/customer');
 
@@ -121,7 +125,7 @@ class ControllerAccountEdit extends Controller {
 
 		// Custom Fields
 		$data['custom_fields'] = array();
-		
+
 		$this->load->model('account/custom_field');
 
 		$custom_fields = $this->model_account_custom_field->getCustomFields($this->config->get('config_customer_group_id'));
@@ -152,12 +156,13 @@ class ControllerAccountEdit extends Controller {
 		$this->response->setOutput($this->load->view('account/edit', $data));
 	}
 
-	protected function validate() {
-		if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
+	protected function validate()
+	{
+		if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 200)) {
 			$this->error['firstname'] = $this->language->get('error_firstname');
 		}
 
-		if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 32)) {
+		if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 200)) {
 			$this->error['lastname'] = $this->language->get('error_lastname');
 		}
 

@@ -20,7 +20,36 @@
       <h1>{{ heading_title }}</h1>
       <p>{{ text_account_already }}</p>
       <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <fieldset id="account">
+       <!-- 
+          Campo CNPJ que é usado para buscar os dados do customer
+          Se não existir precisa ser criado no /admin
+        -->
+      <fieldset id='custom-customer-field'>
+        <legend>{{ text_your_custom_details }}</legend>
+        {% for custom_field in custom_fields %}    
+          {% if (custom_field.name | upper) == 'CNPJ' %}
+             {% if custom_field.type == 'text' %}
+              <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+                <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+                <div class="col-sm-10">
+                  <input id='input-cnpj' type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}" placeholder="{{ custom_field.name }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+                 
+                  <div id='input-cnpj-error'></div>
+                
+                </div>                
+              </div>
+              <div class="col-sm-12">
+              <div class="form-group">
+                  <button id='btn-get-customer-data' type="button" class="btn btn-default btn-lg pull-right">
+                    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Próximo
+                </button>  
+              </div> 
+             {% endif %}
+          {% endif %} 
+        {% endfor %}   
+      
+      </fieldset>     
+        <fieldset id="account" class="hide-register">
           <legend>{{ text_your_details }}</legend>
           <div class="form-group required" style="display: {% if customer_groups|length > 1 %} block {% else %} none {% endif %};">
             <label class="col-sm-2 control-label">{{ entry_customer_group }}</label>
@@ -79,7 +108,8 @@
               {% endif %}
             </div>
           </div>
-          {% for custom_field in custom_fields %}
+          {% for custom_field in custom_fields %}            
+         {% if (custom_field.name | upper) != 'CNPJ' %}     
           {% if custom_field.type == 'select' %}
           <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
             <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
@@ -229,9 +259,10 @@
             </div>
           </div>
           {% endif %}
-          {% endfor %}
+          {% endif %}
+          {% endfor %}          
         </fieldset>
-        <fieldset>
+        <fieldset id="credentials" class="hide-register">
           <legend>{{ text_your_password }}</legend>
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-password">{{ entry_password }}</label>
@@ -262,7 +293,7 @@
             </div>
           </div>
         </fieldset>
-        <fieldset>
+        <fieldset id="newsletters" style="display:none">
           <legend>{{ text_newsletter }}</legend>
           <div class="form-group">
             <label class="col-sm-2 control-label">{{ entry_newsletter }}</label>
@@ -298,15 +329,22 @@
             <input type="checkbox" name="agree" value="1" />
             {% endif %}
             &nbsp;
-            <input type="submit" id="btn-receita-ws" value="{{ button_continue }}" class="btn btn-primary" />
+            <input type="submit"  value="{{ button_continue }}" class="btn btn-primary hide-register" />
           </div>
         </div>
-        {% else %}
-        <div class="buttons">
-          <div class="pull-right">
-            <input type="submit" id="btn-receita-ws" value="{{ button_continue }}" class="btn btn-primary" />
-          </div>
-        </div>
+        {% else %}            
+        <div class="form-group">        
+          <div class="col-sm-12">          
+            <button style="margin-left:20px" type="submit" class="btn btn-default btn-lg pull-right hide-register">
+                <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>{{ button_continue }}
+            </button>  
+            <a href="index.php?route=account/register">
+              <button style="margin-left:20px" type="button" class="btn btn-lg pull-right hide-register">
+                <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>Limpar dados
+            </button>  
+            </a> 
+            </div>     
+        </div>                
         {% endif %}
       </form>
       {{ content_bottom }}
@@ -430,23 +468,57 @@
     pickTime: true
   });
 //--></script>
+
 <script type="text/javascript"><!--
-
-$( "form" ).submit(function( event ) {
-  event.preventDefault();
-
-   var cnpj = $("input[type=text][placeholder='CNPJ']").val();
-
-    $.ajax({
-       dataType:'jsonp',
-       contentType: 'application/json',
-        crossOrigin: true,
-        url: "https://www.receitaws.com.br/v1/cnpj/"+cnpj,
-        success: function(data) {
-            $( "#input-firstname" ).val( data.nome );
+  // Campos obtidos da consulta
+  $("#input-firstname").attr("readonly", "readonly");
+  $("#input-lastname").attr("readonly", "readonly");
+  // Adiciona o ID cnpj ao campo, e aplica amascara
+  $("#input-cnpj").mask('00.000.000/0000-00');
+  // Oculta os campos
+  $(".hide-register").hide();
+  // Ao clicar no botão buscar
+  $( "#btn-get-customer-data" ).click(function( ) {
+    // CNPJ
+    var cnpj = $("#input-cnpj").val().replace(/[^0-9]/g,'');  
+    // Obtem os dados do cliente na receita
+    getCustomerData(cnpj)
+      .done(function(data) { 
+        // Se CNPJ não existir
+        if(data.status === 'ERROR'){  
+          return $("#input-cnpj-error").html(data.message);
         }
-    });
-});
-//--></script>
+        // Desabilita o campo para edição caso encontre as infromações na Receita
+        $("#input-cnpj").attr("readonly", "readonly");        
+        // Exibe os demais campos para preenchimento
+        $(".hide-register").show();    
+        // Oculta o botão de pesquisa
+        $("#btn-get-customer-data").hide(); 
 
+        var nome = data.nome;
+        var fantasia = data.fantasia ? data.fantasia : data.nome;
+        var email = data.email ? data.email : '';
+        var telefone = data.telefone ? data.telefone : '';
+
+        // Coloca os valores no formulário
+        $("#input-firstname").val(nome);
+        $("#input-lastname").val(fantasia);
+        $("#input-telephone").val(telefone);
+        $("#input-email").val(email);
+                             
+      })
+        .fail(function(jqXHR, textStatus, msg) {
+          console.log(jqXHR, textStatus, msg);
+      });
+  });
+//--></script>
+{% if errosQtd %}
+<script type="text/javascript"><!--
+         // Exibe os demais campos para preenchimento
+        $(".hide-register").show();   
+        // Mantem o cnpj consultado fixo
+        $("#input-cnpj").attr("readonly", "readonly");      
+        $("#btn-get-customer-data").hide(); 
+//--></script>
+{% endif %}
 {{ footer }}

@@ -17,6 +17,8 @@ class ControllerAccountRegister extends Controller
 		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js');
 		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
 		$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+		$this->document->addScript('catalog/view/javascript/customer/Utils.js');
+		$this->document->addScript('catalog/view/javascript/jquery-mask/src/jquery.mask.js');
 
 		$this->load->model('account/customer');
 
@@ -215,17 +217,18 @@ class ControllerAccountRegister extends Controller
 		$data['content_bottom'] = $this->load->controller('common/content_bottom');
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
+		$data['errosQtd'] = count($this->request->post);
 
 		$this->response->setOutput($this->load->view('account/register', $data));
 	}
 
 	private function validate()
 	{
-		if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
+		if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 200)) {
 			$this->error['firstname'] = $this->language->get('error_firstname');
 		}
 
-		if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 32)) {
+		if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 200)) {
 			$this->error['lastname'] = $this->language->get('error_lastname');
 		}
 

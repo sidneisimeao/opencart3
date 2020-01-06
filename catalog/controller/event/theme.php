@@ -1,6 +1,8 @@
 <?php
-class ControllerEventTheme extends Controller {
-	public function index(&$route, &$args, &$template) {
+class ControllerEventTheme extends Controller
+{
+	public function index(&$route, &$args, &$template)
+	{
 		// If there is a template file we render
 		if ($template) {
 			// include and register Twig auto-loader
@@ -24,7 +26,8 @@ class ControllerEventTheme extends Controller {
 		}
 	}
 
-	public function override(&$route, &$args, &$template) {
+	public function override(&$route, &$args, &$template)
+	{
 		if (!$this->config->get('theme_' . $this->config->get('config_theme') . '_status')) {
 			exit('Erro: Não há um tema definido para esta loja!');
 		}

@@ -18,9 +18,28 @@
     {% endif %}
     <div id="content" class="{{ class }}">{{ content_top }}
       <h1>{{ heading_title }}</h1>
-      <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <fieldset>
-          <legend>{{ text_your_details }}</legend>
+      <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-update-customer" class="form-horizontal">
+      <!-- 
+          Campo CNPJ que é usado para buscar os dados do customer
+          Se não existir precisa ser criado no /admin
+        -->
+     <fieldset>
+         <legend>{{ text_your_details }}</legend>
+        {% for custom_field in custom_fields %}    
+          {% if (custom_field.name | upper) == 'CNPJ' %}
+              {% if custom_field.type == 'text' %}
+          <div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <input id='input-cnpj' type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{% if account_custom_field[custom_field.custom_field_id] %}{{ account_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}" placeholder="{{ custom_field.name }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+          {% endif %} 
+        {% endfor %}
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-firstname">{{ entry_firstname }}</label>
             <div class="col-sm-10">
@@ -58,6 +77,7 @@
             </div>
           </div>
           {% for custom_field in custom_fields %}
+           {% if (custom_field.name | upper) != 'CNPJ' %}   
           {% if custom_field.type == 'select' %}
           <div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">
             <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
@@ -214,6 +234,7 @@
             </div>
           </div>
           {% endif %}
+           {% endif %}
           {% endfor %}
         </fieldset>
         <div class="buttons clearfix">
@@ -316,6 +337,55 @@
   $('.time').datetimepicker({
     language: '{{ datepicker }}',
     pickDate: false
+  });
+//--></script>
+
+<script type="text/javascript"><!--
+  // Campos obtidos da consulta
+  $("#input-lastname").attr("readonly", "readonly");
+  $("#input-firstname").attr("readonly", "readonly");
+  $("#input-lastname").attr("readonly", "readonly");
+  $("#input-cnpj").attr("readonly", "readonly");
+
+  // Adiciona o ID cnpj ao campo, e aplica amascara
+  $("#input-cnpj").mask('00.000.000/0000-00');
+  // Oculta os campos
+  $(".hide-register").hide();
+  // Ao clicar no botão buscar
+  $( "#form-update-customer" ).submit(function( event ) {
+
+     event.preventDefault();
+    // CNPJ
+    var cnpj = $("#input-cnpj").val().replace(/[^0-9]/g,'');  
+    // Obtem os dados do cliente na receita
+    getCustomerData(cnpj)
+      .done(function(data) { 
+        // Se CNPJ não existir
+        if(data.status === 'ERROR'){  
+          return $("#input-cnpj-error").html(data.message);
+        }
+        // Desabilita o campo para edição caso encontre as infromações na Receita
+        $("#input-cnpj").attr("readonly", "readonly");        
+        // Exibe os demais campos para preenchimento
+        $(".hide-register").show();    
+        // Oculta o botão de pesquisa
+        $("#btn-get-customer-data").hide(); 
+
+        var nome = data.nome;
+        var fantasia = data.fantasia ? data.fantasia : data.nome;
+        var email = data.email ? data.email : '';
+        var telefone = data.telefone ? data.telefone : '';
+
+        // Coloca os valores no formulário
+        $("#input-firstname").val(nome);
+        $("#input-lastname").val(fantasia);
+        $("#input-telephone").val(telefone);
+        $("#input-email").val(email);
+                             
+      })
+        .fail(function(jqXHR, textStatus, msg) {
+          console.log(jqXHR, textStatus, msg);
+      });
   });
 //--></script>
 {{ footer }}

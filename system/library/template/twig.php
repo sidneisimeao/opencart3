@@ -1,21 +1,27 @@
 <?php
+
 namespace Template;
-final class Twig {
+
+final class Twig
+{
 	private $twig;
 	private $data = array();
 
-	public function __construct() {
+	public function __construct()
+	{
 		// include and register Twig auto-loader
 		include_once(DIR_SYSTEM . 'library/template/Twig/Autoloader.php');
 
 		\Twig_Autoloader::register();
 	}
 
-	public function set($key, $value) {
+	public function set($key, $value)
+	{
 		$this->data[$key] = $value;
 	}
 
-	public function render($template, $cache = false) {
+	public function render($template, $cache = false)
+	{
 		// specify where to look for templates
 		$loader = new \Twig_Loader_Filesystem(DIR_TEMPLATE);
 
