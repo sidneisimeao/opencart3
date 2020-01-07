@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     OpenCart
  * @author      Daniel Kerr
@@ -10,33 +11,36 @@
 /**
  * Loader class
  */
-final class Loader {
+final class Loader
+{
 	protected $registry;
 
-    /**
-     * Constructor
-     *
-     * @param    object $registry
-     */
-	public function __construct($registry) {
+	/**
+	 * Constructor
+	 *
+	 * @param    object $registry
+	 */
+	public function __construct($registry)
+	{
 		$this->registry = $registry;
 	}
 
-    /**
-     *
-     *
-     * @param    string $route
-     * @param    array $data
-     *
-     * @return    mixed
-     */
-	public function controller($route) {
+	/**
+	 *
+	 *
+	 * @param    string $route
+	 * @param    array $data
+	 *
+	 * @return    mixed
+	 */
+	public function controller($route)
+	{
 		$args = func_get_args();
 
 		array_shift($args);
 
 		// Sanitize the call
-		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route);
+		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string) $route);
 
 		// Keep the original trigger
 		$trigger = $route;
@@ -64,14 +68,15 @@ final class Loader {
 		}
 	}
 
-    /**
-     *
-     *
-     * @param    string $route
-     */
-	public function model($route) {
+	/**
+	 *
+	 *
+	 * @param    string $route
+	 */
+	public function model($route)
+	{
 		// Sanitize the call
-		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route);
+		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string) $route);
 
 		if (!$this->registry->has('model_' . str_replace('/', '_', $route))) {
 			$file = DIR_APPLICATION . 'model/' . $route . '.php';
@@ -88,24 +93,25 @@ final class Loader {
 					$proxy->{$method} = $this->callback($route . '/' . $method);
 				}
 
-				$this->registry->set('model_' . str_replace('/', '_', (string)$route), $proxy);
+				$this->registry->set('model_' . str_replace('/', '_', (string) $route), $proxy);
 			} else {
 				throw new \Exception('Erro: Não foi possível encontrar o model ' . $route . '!');
 			}
 		}
 	}
 
-    /**
-     *
-     *
-     * @param    string $route
-     * @param    array $data
-     *
-     * @return   string
-     */
-	public function view($route, $data = array()) {
+	/**
+	 *
+	 *
+	 * @param    string $route
+	 * @param    array $data
+	 *
+	 * @return   string
+	 */
+	public function view($route, $data = array())
+	{
 		// Sanitize the call
-		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route);
+		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string) $route);
 
 		// Keep the original trigger
 		$trigger = $route;
@@ -139,14 +145,15 @@ final class Loader {
 		return $output;
 	}
 
-    /**
-     *
-     *
-     * @param    string $route
-     */
-	public function library($route) {
+	/**
+	 *
+	 *
+	 * @param    string $route
+	 */
+	public function library($route)
+	{
 		// Sanitize the call
-		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route);
+		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string) $route);
 
 		$file = DIR_SYSTEM . 'library/' . $route . '.php';
 		$class = str_replace('/', '\\', $route);
@@ -160,13 +167,14 @@ final class Loader {
 		}
 	}
 
-    /**
-     *
-     *
-     * @param    string $route
-     */
-	public function helper($route) {
-		$file = DIR_SYSTEM . 'helper/' . preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route) . '.php';
+	/**
+	 *
+	 *
+	 * @param    string $route
+	 */
+	public function helper($route)
+	{
+		$file = DIR_SYSTEM . 'helper/' . preg_replace('/[^a-zA-Z0-9_\/]/', '', (string) $route) . '.php';
 
 		if (is_file($file)) {
 			include_once($file);
@@ -175,12 +183,13 @@ final class Loader {
 		}
 	}
 
-    /**
-     *
-     *
-     * @param    string $route
-     */
-	public function config($route) {
+	/**
+	 *
+	 *
+	 * @param    string $route
+	 */
+	public function config($route)
+	{
 		$this->registry->get('event')->trigger('config/' . $route . '/before', array(&$route));
 
 		$this->registry->get('config')->load($route);
@@ -188,17 +197,18 @@ final class Loader {
 		$this->registry->get('event')->trigger('config/' . $route . '/after', array(&$route));
 	}
 
-    /**
-     *
-     *
-     * @param    string $route
-     * @param    string $key
-     *
-     * @return    array
-     */
-	public function language($route, $key = '') {
+	/**
+	 *
+	 *
+	 * @param    string $route
+	 * @param    string $key
+	 *
+	 * @return    array
+	 */
+	public function language($route, $key = '')
+	{
 		// Sanitize the call
-		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route);
+		$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string) $route);
 
 		// Keep the original trigger
 		$trigger = $route;
@@ -220,12 +230,13 @@ final class Loader {
 		return $output;
 	}
 
-	protected function callback($route) {
+	protected function callback($route)
+	{
 		return function () use ($route) {
 			// Grab args using function because we don't know the number of args being passed.
 			$args = func_get_args();
 
-			$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route);
+			$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string) $route);
 
 			// Keep the original trigger
 			$trigger = $route;

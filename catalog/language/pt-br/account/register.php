@@ -32,7 +32,8 @@ $_['error_password']       = 'A senha deve ter entre 4 e 20 caracteres.';
 $_['error_confirm']        = 'A senha repetida esta errada.';
 $_['error_agree']          = 'Atenção: Você deve aceitar o contrato de %s.';
 
+
 /**
  * Custom fields
  */
-$_['text_your_custom_details']  = 'Informe seu CNPJ';
+$_['error_cnpj']        = 'Atenção: Este CNPJ já está cadastrado.';

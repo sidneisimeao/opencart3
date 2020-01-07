@@ -22,8 +22,18 @@ class ControllerAccountRegister extends Controller
 
 		$this->load->model('account/customer');
 
+		$this->load->model('account/customer_document');
+
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+
+			// Grava o cliente
 			$customer_id = $this->model_account_customer->addCustomer($this->request->post);
+
+			// CNPJ
+			$customFieldCNPJ = $this->request->post['custom_field']['account'][1];
+
+			// Grava o CNPJ
+			$this->model_account_customer_document->addCustomerDocument($customer_id, $customFieldCNPJ);
 
 			// Clear any previous login attempts for unregistered accounts.
 			$this->model_account_customer->deleteLoginAttempts($this->request->post['email']);
@@ -292,6 +302,14 @@ class ControllerAccountRegister extends Controller
 			if ($information_info && !isset($this->request->post['agree'])) {
 				$this->error['warning'] = sprintf($this->language->get('error_agree'), $information_info['title']);
 			}
+		}
+
+		// CNPJ
+		$customFieldCNPJ = $this->request->post['custom_field']['account'][1] ?? 0;
+
+		// Valida se o cadastro do cnpj já não existe ( CNPJ é um campo customizavel e espera-se que esteja na posição 1 )
+		if ($this->model_account_customer_document->getCustomerByDocument($customFieldCNPJ) or empty($customFieldCNPJ)) {
+			$this->error['warning'] = $this->language->get('error_cnpj');
 		}
 
 		return !$this->error;
