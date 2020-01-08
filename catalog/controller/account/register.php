@@ -157,6 +157,48 @@ class ControllerAccountRegister extends Controller
 			$data['telephone'] = '';
 		}
 
+		if (isset($this->request->post['company'])) {
+			$data['company'] = $this->request->post['company'];
+		} else {
+			$data['company'] = '';
+		}
+
+		if (isset($this->request->post['address_1'])) {
+			$data['address_1'] = $this->request->post['address_1'];
+		} else {
+			$data['address_1'] = '';
+		}
+
+		if (isset($this->request->post['address_2'])) {
+			$data['address_2'] = $this->request->post['address_2'];
+		} else {
+			$data['address_2'] = '';
+		}
+
+		if (isset($this->request->post['postcode'])) {
+			$data['postcode'] = $this->request->post['postcode'];
+		} else {
+			$data['postcode'] = '';
+		}
+
+		if (isset($this->request->post['city'])) {
+			$data['city'] = $this->request->post['city'];
+		} else {
+			$data['city'] = '';
+		}
+
+		if (isset($this->request->post['country_id'])) {
+			$data['country_id'] = (int) $this->request->post['country_id'];
+		} else {
+			$data['country_id'] = $this->config->get('config_country_id');
+		}
+
+		if (isset($this->request->post['code'])) {
+			$data['code'] = $this->request->post['code'];
+		} else {
+			$data['code'] = '';
+		}
+
 		// Custom Fields
 		$data['custom_fields'] = array();
 
@@ -228,6 +270,14 @@ class ControllerAccountRegister extends Controller
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 		$data['errosQtd'] = count($this->request->post);
+
+		// Carrega amodel de endereços
+		$this->load->model('localisation/country');
+		// Adicionei infomrações referentes a endereços
+		$data['countries'] = $this->model_localisation_country->getCountries();
+		// Carrega amodel de endereços
+		$this->load->model('localisation/zone');
+		$data['zones'] = $this->model_localisation_zone->getZonesByCountryId(30); // Brasil
 
 		$this->response->setOutput($this->load->view('account/register', $data));
 	}

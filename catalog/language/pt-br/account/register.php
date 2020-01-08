@@ -11,6 +11,13 @@ $_['text_newsletter']      = 'Assine nosso informativo e receba novidades e prom
 $_['text_your_password']   = 'Sua senha de acesso';
 $_['text_agree']           = 'Eu li e concordo com o contrato de <a href="%s" class="agree"><b>%s</b></a>';
 
+// Adicionados
+$_['text_address']       = 'Endereço';
+$_['text_account']       = 'Minha conta';
+$_['text_address_book']  = 'Lista de endereços';
+$_['text_address_add']   = 'Novo endereço';
+$_['text_address_edit']  = 'Editando endereço';
+
 // Entry
 $_['entry_customer_group'] = 'Comprar como';
 $_['entry_firstname']      = 'Nome';
@@ -20,6 +27,15 @@ $_['entry_telephone']      = 'Telefone';
 $_['entry_newsletter']     = 'Deseja assinar?';
 $_['entry_password']       = 'Senha';
 $_['entry_confirm']        = 'Repetir a senha';
+// Adicionados
+$_['entry_company']      = 'Referência';
+$_['entry_address_1']    = 'Endereço';
+$_['entry_address_2']    = 'Bairro';
+$_['entry_postcode']     = 'CEP';
+$_['entry_city']         = 'Cidade';
+$_['entry_country']      = 'País';
+$_['entry_zone']         = 'Estado';
+$_['entry_default']      = 'Endereço principal';
 
 // Error
 $_['error_exists']         = 'Atenção: Este e-mail já está cadastrado.';
@@ -32,8 +48,5 @@ $_['error_password']       = 'A senha deve ter entre 4 e 20 caracteres.';
 $_['error_confirm']        = 'A senha repetida esta errada.';
 $_['error_agree']          = 'Atenção: Você deve aceitar o contrato de %s.';
 
-
-/**
- * Custom fields
- */
+// Adicionados
 $_['error_cnpj']        = 'Atenção: Este CNPJ já está cadastrado.';
