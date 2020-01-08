@@ -1,4 +1,17 @@
 <?php
+
+/*
+  @response
+ * array (size=5)
+  'seqcidade' => string '3632' (length=4)
+  'municipio' => string 'POCOS DE CALDAS' (length=15)
+  'uf' => string 'MG' (length=2)
+  'cepinicial' => string '37700000' (length=8)
+	'cepfinal' => string '37719999' (length=8)
+
+	@param string cep - CEP do cliente
+	Valida se o cep esta dentro das faixas cadastradas
+ */
 class ModelAccountCustomerZip extends Model
 {
 	public function validateZipCodeTracks($cep)

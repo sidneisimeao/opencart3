@@ -21,7 +21,7 @@ class ControllerAccountRegister extends Controller
 		$this->document->addScript('catalog/view/javascript/jquery-mask/src/jquery.mask.js');
 
 		$this->load->model('account/customer');
-
+		$this->load->model('account/address');
 		$this->load->model('account/customer_document');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
@@ -39,6 +39,14 @@ class ControllerAccountRegister extends Controller
 			$this->model_account_customer->deleteLoginAttempts($this->request->post['email']);
 
 			$this->customer->login($this->request->post['email'], $this->request->post['password']);
+
+			$this->load->model('localisation/zone');
+			// Obtem o zone_id com base no UF
+			$zone = $this->model_localisation_zone->getZoneByCode($this->request->post['code']);
+			$this->request->post['zone_id'] = $zone['zone_id'];
+
+			// Grava o endereço
+			$this->model_account_address->addAddress($customer_id, $this->request->post);
 
 			unset($this->session->data['guest']);
 
@@ -109,6 +117,36 @@ class ControllerAccountRegister extends Controller
 			$data['error_confirm'] = $this->error['confirm'];
 		} else {
 			$data['error_confirm'] = '';
+		}
+
+		if (isset($this->error['address_1'])) {
+			$data['error_address_1'] = $this->error['address_1'];
+		} else {
+			$data['error_address_1'] = '';
+		}
+
+		if (isset($this->error['city'])) {
+			$data['error_city'] = $this->error['city'];
+		} else {
+			$data['error_city'] = '';
+		}
+
+		if (isset($this->error['postcode'])) {
+			$data['error_postcode'] = $this->error['postcode'];
+		} else {
+			$data['error_postcode'] = '';
+		}
+
+		if (isset($this->error['country'])) {
+			$data['error_country'] = $this->error['country'];
+		} else {
+			$data['error_country'] = '';
+		}
+
+		if (isset($this->error['code'])) {
+			$data['error_zone'] = $this->error['code'];
+		} else {
+			$data['error_zone'] = '';
 		}
 
 		$data['action'] = $this->url->link('account/register', '', true);
@@ -360,6 +398,42 @@ class ControllerAccountRegister extends Controller
 		// Valida se o cadastro do cnpj já não existe ( CNPJ é um campo customizavel e espera-se que esteja na posição 1 )
 		if ($this->model_account_customer_document->getCustomerByDocument($customFieldCNPJ) or empty($customFieldCNPJ)) {
 			$this->error['warning'] = $this->language->get('error_cnpj');
+		}
+
+		$this->load->model('localisation/country');
+
+		$country_info = $this->model_localisation_country->getCountry($this->request->post['country_id']);
+
+		if (
+			$country_info && $country_info['postcode_required']
+			&& (utf8_strlen(trim($this->request->post['postcode'])) < 2 || utf8_strlen(trim($this->request->post['postcode'])) > 10)
+		) {
+			//$this->error['postcode'] = $this->language->get('error_postcode');
+		}
+
+		if ($this->request->post['country_id'] == '' || !is_numeric($this->request->post['country_id'])) {
+			$this->error['country'] = $this->language->get('error_country');
+		}
+
+		if (!isset($this->request->post['code'])) {
+			$this->error['code'] = $this->language->get('code');
+		}
+
+		if (isset($this->request->post['code'])) {
+
+			$this->load->model('localisation/zone');
+			$zone = $this->model_localisation_zone->getZoneByCode($this->request->post['code']);
+
+			if (empty($zone['zone_id'])) {
+				$this->error['code'] = 'UF não informada';
+			}
+		}
+
+		// Custom field validation
+		$this->load->model('account/customer_zip');
+
+		if (empty($this->model_account_customer_zip->validateZipCodeTracks($this->request->post['postcode']))) {
+			$this->error['postcode'] = "O CEP: {$this->request->post['postcode']} não é atendido";
 		}
 
 		return !$this->error;

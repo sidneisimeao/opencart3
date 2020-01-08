@@ -264,7 +264,7 @@
           {% endfor %}          
         </fieldset>
         <!-- <Endereço> -->
-          <fieldset id="endereco" >
+          <fieldset iid="endereco" class="hide-register"
           <legend>{{ text_address }}</legend>    
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-postcode">{{ entry_postcode }}</label>
@@ -592,6 +592,7 @@
         var bairro = data.bairro;
         var municipio = data.municipio;
         var uf = data.uf;
+        var numero = data.numero;
 
         // Coloca os valores no formulário
         $("#input-firstname").val(nome);
@@ -599,7 +600,7 @@
         $("#input-telephone").val(telefone);
         $("#input-email").val(email);
         $("#input-postcode").val(cep);
-        $("#input-address-1").val(logradouro);
+        $("#input-address-1").val(logradouro+' Nº:'+numero);
         $("#input-address-2").val(bairro);
         $("#input-city").val(municipio);
         $("#input-zone").val(uf);
