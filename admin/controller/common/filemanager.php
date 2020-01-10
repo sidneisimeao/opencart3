@@ -1,6 +1,8 @@
 <?php
-class ControllerCommonFileManager extends Controller {
-	public function index() {
+class ControllerCommonFileManager extends Controller
+{
+	public function index()
+	{
 		$this->load->language('common/filemanager');
 
 		// Find which protocol to use to pass the full image link back
@@ -15,6 +17,7 @@ class ControllerCommonFileManager extends Controller {
 		} else {
 			$filter_name = '';
 		}
+
 
 		// Make sure we have the correct directory
 		if (isset($this->request->get['directory'])) {
@@ -188,7 +191,8 @@ class ControllerCommonFileManager extends Controller {
 		$this->response->setOutput($this->load->view('common/filemanager', $data));
 	}
 
-	public function upload() {
+	public function upload()
+	{
 		$this->load->language('common/filemanager');
 
 		$json = array();
@@ -283,7 +287,8 @@ class ControllerCommonFileManager extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	public function folder() {
+	public function folder()
+	{
 		$this->load->language('common/filemanager');
 
 		$json = array();
@@ -333,7 +338,8 @@ class ControllerCommonFileManager extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	public function delete() {
+	public function delete()
+	{
 		$this->load->language('common/filemanager');
 
 		$json = array();
@@ -368,7 +374,7 @@ class ControllerCommonFileManager extends Controller {
 				if (is_file($path)) {
 					unlink($path);
 
-				// If path is a directory beging deleting each file and sub folder
+					// If path is a directory beging deleting each file and sub folder
 				} elseif (is_dir($path)) {
 					$files = array();
 
@@ -398,7 +404,7 @@ class ControllerCommonFileManager extends Controller {
 						if (is_file($file)) {
 							unlink($file);
 
-						// If directory use the remove directory function
+							// If directory use the remove directory function
 						} elseif (is_dir($file)) {
 							rmdir($file);
 						}

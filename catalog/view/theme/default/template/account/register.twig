@@ -563,6 +563,9 @@
 
   // Adiciona o ID cnpj ao campo, e aplica amascara
   $("#input-cnpj").mask('00.000.000/0000-00');
+  // Mascara Monetária
+  $("#input-custom-field2").mask("#.##0,00", {reverse: true});
+
   // Oculta os campos
   $(".hide-register").hide();
   // Ao clicar no botão buscar
