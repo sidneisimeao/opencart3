@@ -1,15 +1,15 @@
 <?php
 // HTTP
-define('HTTP_SERVER', 'http://unilever.vilanova.com.br/opencart3/');
+define('HTTP_SERVER', 'http://fontes.vilanova.com.br/opencart3/');
 
 // HTTPS
-define('HTTPS_SERVER', 'http://unilever.vilanova.com.br/opencart3/');
+define('HTTPS_SERVER', 'http://fontes.vilanova.com.br/opencart3/');
 
 // DIR
-define('DIR_APPLICATION', '/home/sidnei/Fontes/opencart3/catalog/');
-define('DIR_SYSTEM', '/home/sidnei/Fontes/opencart3/system/');
-define('DIR_IMAGE', '/home/sidnei/Fontes/opencart3/image/');
-define('DIR_STORAGE', '/home/sidnei/Fontes/storage/');
+define('DIR_APPLICATION', '/var/www/html/opencart3/catalog/');
+define('DIR_SYSTEM', '/var/www/html/opencart3/system/');
+define('DIR_IMAGE', '/var/www/html/opencart3/image/');
+define('DIR_STORAGE', '/var/www/storage/');
 define('DIR_LANGUAGE', DIR_APPLICATION . 'language/');
 define('DIR_TEMPLATE', DIR_APPLICATION . 'view/theme/');
 define('DIR_CONFIG', DIR_SYSTEM . 'config/');
@@ -22,6 +22,7 @@ define('DIR_UPLOAD', DIR_STORAGE . 'upload/');
 
 // DB
 define('DB_DRIVER', 'pdo');
+
 define('DB_HOSTNAME', 'localhost');
 define('DB_USERNAME', 'developer');
 define('DB_PASSWORD', 'developer');

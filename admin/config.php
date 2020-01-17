@@ -1,17 +1,17 @@
 <?php
 // HTTP
-define('HTTP_SERVER', 'http://unilever.vilanova.com.br/opencart3/admin/');
-define('HTTP_CATALOG', 'http://unilever.vilanova.com.br/opencart3/');
+define('HTTP_SERVER', 'http://fontes.vilanova.com.br/opencart3/admin/');
+define('HTTP_CATALOG', 'http://fontes.vilanova.com.br/opencart3/');
 
 // HTTPS
-define('HTTPS_SERVER', 'http://unilever.vilanova.com.br/opencart3/admin/');
-define('HTTPS_CATALOG', 'http://unilever.vilanova.com.br/opencart3/');
+define('HTTPS_SERVER', 'http://fontes.vilanova.com.br/opencart3/admin/');
+define('HTTPS_CATALOG', 'http://fontes.vilanova.com.br/opencart3/');
 
 // DIR
-define('DIR_APPLICATION', '/home/sidnei/Fontes/opencart3/admin/');
-define('DIR_SYSTEM', '/home/sidnei/Fontes/opencart3/system/');
-define('DIR_STORAGE', '/home/sidnei/Fontes/storage/');
-define('DIR_IMAGE', DIR_STORAGE . 'image/');
+define('DIR_APPLICATION', '/var/www/html/opencart3/admin/');
+define('DIR_SYSTEM', '/var/www/html/opencart3/system/');
+define('DIR_STORAGE', '/var/www/storage/');
+define('DIR_IMAGE',  '/var/www/html/opencart3/image/');
 define('DIR_CATALOG', DIR_IMAGE . 'catalog/');
 define('DIR_LANGUAGE', DIR_APPLICATION . 'language/');
 define('DIR_TEMPLATE', DIR_APPLICATION . 'view/template/');
