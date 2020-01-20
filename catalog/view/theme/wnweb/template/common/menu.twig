@@ -1,23 +1,25 @@
 {% if categories %}
 <div class="jumbotron mp0">
 	<div class="container">
-	<ul class="nav navbar-nav">	 
+	<ul id="menu-navbar-nav" class="nav navbar-nav">	 
 	{% for category in categories %} 
 	   	{% if category.name == 'CATEGORIAS' %}
 	  	<li>
 				<div class="dropdown">
 				<!-- categorias nivel 1 -->
-					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{category.name}}<span class="caret"></span></button>
+					<button id='btn-dropdown-menunav' class="dropdown-toggle" type="button" data-toggle="dropdown">{{category.name}}
+			   		<span class="caret"></span>
+					</button>
 					<!-- CATEGORIAS nivel 1, verifica se tem filhos -->
 					{% if category.children  %}
-					<ul class="dropdown-menu">
+					<ul id="dropdown-menu-nivel-2" class="dropdown-menu">
 				     	<!-- categorias nivel 2 -->
 							 	{% for nivel2 in category.children %}
 										<li class="dropdown-submenu">
 											<a class="test" tabindex="-1" href="#">{{nivel2.name}}</span></a>
 												<!-- categorias nivel 3 -->
 												{% if nivel2.children %}
-											   	<ul class="dropdown-menu">
+											   	<ul id="dropdown-menu-nivel-3" class="dropdown-menu">
 													{% for nivel3 in nivel2.children %}															
 																	<li class="dropdown-submenu">
 																		<a class="test" href="#">{{nivel3.name}}</span></a>
@@ -44,22 +46,33 @@
 	  	</li>
 		{% else %}
 			<!-- categorias nivel 1 sem drop down -->
-	  	<li><a href="#">{{ category.name }}</a></li>		
+	  	<li><a class="no-dropdown" href="#">{{ category.name }}</a></li>		
 		{% endif %}		
 	{% endfor %}
 	</ul>
 </div>	
 </div>	
+<br />
 {% endif %} 
 <script type="text/javascript"><!--
 $(document).ready(function(){
 	$('.dropdown').hover(function(){ 
 			$('.dropdown-toggle', this).trigger('click'); 
 	});
+	 	 
   $('.dropdown-submenu a.test').on("click", function(e){
     $(this).next('ul').toggle();
     e.stopPropagation();
     e.preventDefault();
   });
+
+	// Fixa o menu na altura ideal
+	$('.dropdown-submenu a.test').hover(function(e){
+
+		var menuWidth = $('#menu-navbar-nav').width();
+    var menuTop = ($(this).offset().top - $(window).scrollTop()) - 240;		 
+		 $(this).next('ul').css("top", "-"+menuTop+"px").css("width", menuWidth+"px");
+  });
+
 });
 //--></script>
