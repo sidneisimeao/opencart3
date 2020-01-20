@@ -1,6 +1,10 @@
 <?php
-class ControllerCommonMenu extends Controller {
-	public function index() {
+class ControllerCommonMenu extends Controller
+{
+	public function index()
+	{
+
+
 		$this->load->language('common/menu');
 
 		// Menu
@@ -10,8 +14,43 @@ class ControllerCommonMenu extends Controller {
 
 		$data['categories'] = array();
 
-		$categories = $this->model_catalog_category->getCategories(0);
+		$categories = $this->model_catalog_category->getAllCategoryTree();
 
+		foreach ($categories as $category) {
+			// Acumula nivel 1
+			if (empty($data['categories'][$category['c1_id']])) {
+				$data['categories'][$category['c1_id']] = [
+					'name' => $category['c1_name'],
+					'children' => []
+				];
+			}
+			// Acumula nivel 2
+			if (empty($data['categories'][$category['c1_id']]['children'][$category['c2_id']])) {
+				$data['categories'][$category['c1_id']]['children'][$category['c2_id']] = [
+					'name' => $category['c2_name'],
+					'children' => []
+				];
+			}
+			// Acumula nivel 3
+			if (empty($data['categories'][$category['c1_id']]['children'][$category['c2_id']]['children'][$category['c3_id']])) {
+				$data['categories'][$category['c1_id']]['children'][$category['c2_id']]['children'][$category['c3_id']] = [
+					'name' => $category['c3_name'],
+					'children' => []
+				];
+			}
+			// Acumula nivel 4
+			if (empty($data['categories'][$category['c1_id']]['children'][$category['c2_id']]['children'][$category['c3_id']]['children'][$category['c4_id']])) {
+				$data['categories'][$category['c1_id']]['children'][$category['c2_id']]['children'][$category['c3_id']]['children'][$category['c4_id']] = [
+					'name' => $category['c4_name'],
+					'href' => $this->url->link('product/category', 'path=' . $category['c2_id'])
+				];
+			}
+		}
+
+		//print '<pre>';
+		//	print_r($data['categories']);
+
+		/*
 		foreach ($categories as $category) {
 			if ($category['top']) {
 				// Level 2
@@ -40,6 +79,7 @@ class ControllerCommonMenu extends Controller {
 				);
 			}
 		}
+		*/
 
 		return $this->load->view('common/menu', $data);
 	}

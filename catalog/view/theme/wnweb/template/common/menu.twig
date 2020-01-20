@@ -1,32 +1,62 @@
 {% if categories %}
 <div class="jumbotron mp0">
 	<div class="container">
-	  <nav id="menu" class="navbar">
-		<div class="navbar-header"><span id="category" class="visible-xs">{{ text_category }}</span>
-		  <button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fa fa-bars"></i></button>
-		</div>
-		<div class="collapse navbar-collapse navbar-ex1-collapse">
-		  <ul class="nav navbar-nav">
-			{% for category in categories %}
-			{% if category.children %}
-			<li class="dropdown"><a href="{{ category.href }}" class="dropdown-toggle" data-toggle="dropdown">{{ category.name }}</a>
-			  <div class="dropdown-menu">
-				<div class="dropdown-inner"> {% for children in category.children|batch(category.children|length / category.column|round(1, 'ceil')) %}
-				  <ul class="list-unstyled">
-					{% for child in children %}
-					<li><a href="{{ child.href }}">{{ child.name }}</a></li>
-					{% endfor %}
-				  </ul>
-				  {% endfor %}</div>
-				<a href="{{ category.href }}" class="see-all">{{ text_all }} {{ category.name }}</a> </div>
-			</li>
-			{% else %}
-			<li><a href="{{ category.href }}">{{ category.name }}</a></li>
-			{% endif %}
-			{% endfor %}
-		  </ul>
-		</div>
-	  </nav>
-	</div>
+	<ul class="nav navbar-nav">	 
+	{% for category in categories %} 
+	   	{% if category.name == 'CATEGORIAS' %}
+	  	<li>
+				<div class="dropdown">
+				<!-- categorias nivel 1 -->
+					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{category.name}}<span class="caret"></span></button>
+					<!-- CATEGORIAS nivel 1, verifica se tem filhos -->
+					{% if category.children %}
+					<ul class="dropdown-menu">
+				     	<!-- categorias nivel 2 -->
+							 	{% for nivel2 in category.children %}
+										<li class="dropdown-submenu">
+											<a class="test" tabindex="-1" href="#">{{nivel2.name}}</span></a>
+												<!-- categorias nivel 3 -->
+												{% if nivel2.children %}
+											   	<ul class="dropdown-menu">
+													{% for nivel3 in nivel2.children %}															
+																	<li class="dropdown-submenu">
+																		<a class="test" href="#">{{nivel3.name}}</span></a>
+																			<!-- categorias nivel 4 -->
+											              	{% if nivel3.children %}
+																		    	{% for nivel4 in nivel3.children %}		
+																    			<ul class="dropdown-menu">
+																				   	<li><a href="{{nivel4.href}}">{{nivel4.name}}</a></li>
+																					</ul>
+																					{% endfor %}
+															 				{% endif %}	
+																	 	<!-- / categorias nivel 4 -->
+																	</li>											
+														{% endfor %}
+												  </ul>
+												{% endif %}												
+										</li>
+								{% endfor %}
+				  		<!-- / categorias nivel 2 -->
+					</ul>	
+					{% endif %}	
+					<!--/ categorias nivel 1 -->
+				</div>
+	  	</li>
+		{% else %}
+			<!-- categorias nivel 1 sem drop down -->
+	  	<li><a href="#">{{ category.name }}</a></li>		
+		{% endif %}		
+	{% endfor %}
+	</ul>
+</div>	
 </div>	
 {% endif %} 
+<script type="text/javascript"><!--
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+//--></script>
