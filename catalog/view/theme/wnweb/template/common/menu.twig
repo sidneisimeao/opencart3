@@ -9,7 +9,7 @@
 				<!-- categorias nivel 1 -->
 					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{{category.name}}<span class="caret"></span></button>
 					<!-- CATEGORIAS nivel 1, verifica se tem filhos -->
-					{% if category.children %}
+					{% if category.children  %}
 					<ul class="dropdown-menu">
 				     	<!-- categorias nivel 2 -->
 							 	{% for nivel2 in category.children %}
@@ -23,11 +23,11 @@
 																		<a class="test" href="#">{{nivel3.name}}</span></a>
 																			<!-- categorias nivel 4 -->
 											              	{% if nivel3.children %}
-																		    	{% for nivel4 in nivel3.children %}		
-																    			<ul class="dropdown-menu">
-																				   	<li><a href="{{nivel4.href}}">{{nivel4.name}}</a></li>
-																					</ul>
+																   			<ul class="dropdown-menu">
+																		    	{% for nivel4 in nivel3.children %}																	    			
+																				   	<li><a href="{{nivel4.href}}">{{nivel4.name}}</a></li>																				
 																					{% endfor %}
+																				</ul>
 															 				{% endif %}	
 																	 	<!-- / categorias nivel 4 -->
 																	</li>											
@@ -53,6 +53,9 @@
 {% endif %} 
 <script type="text/javascript"><!--
 $(document).ready(function(){
+	$('.dropdown').hover(function(){ 
+			$('.dropdown-toggle', this).trigger('click'); 
+	});
   $('.dropdown-submenu a.test').on("click", function(e){
     $(this).next('ul').toggle();
     e.stopPropagation();
