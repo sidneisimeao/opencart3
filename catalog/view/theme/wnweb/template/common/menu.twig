@@ -20,20 +20,22 @@
 												<!-- categorias nivel 3 -->
 												{% if nivel2.children %}
 											   	<ul id="dropdown-menu-nivel-3" class="dropdown-menu">
-													{% for nivel3 in nivel2.children %}															
-																	<li class="dropdown-submenu">
-																		<a class="test" href="#">{{nivel3.name}}</span></a>
+													 	<div class="row pull-left">														 	
+												  	{% for nivel3 in nivel2.children %}															
+																	<div class="col-sm-4">
+																		<p class='label-level-3'>{{nivel3.name}}</p>
 																			<!-- categorias nivel 4 -->
-											              	{% if nivel3.children %}
-																   			<ul class="dropdown-menu">
+											              	{% if nivel3.children %}																	
+																   			<ul>
 																		    	{% for nivel4 in nivel3.children %}																	    			
-																				   	<li><a href="{{nivel4.href}}">{{nivel4.name}}</a></li>																				
+																				   	<li class="li-nivel-4"><a class="link-nivel-4" href="{{nivel4.href}}">{{nivel4.name}}</a></li>																				
 																					{% endfor %}
-																				</ul>
+																				</ul>																		
 															 				{% endif %}																			
 																	 	<!-- / categorias nivel 4 -->
-																	</li>											
-														{% endfor %}
+																	</div>							
+												   		{% endfor %}													
+															</div>			
 												  </ul>
 												{% endif %}												
 										</li>

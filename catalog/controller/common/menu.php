@@ -40,9 +40,10 @@ class ControllerCommonMenu extends Controller
 			}
 			// Acumula nivel 4
 			if (empty($data['categories'][$category['c1_id']]['children'][$category['c2_id']]['children'][$category['c3_id']]['children'][$category['c4_id']])) {
+				$category_link = "{$category['c1_id']}_{$category['c2_id']}_{$category['c3_id']}_{$category['c4_id']}";
 				$data['categories'][$category['c1_id']]['children'][$category['c2_id']]['children'][$category['c3_id']]['children'][$category['c4_id']] = [
 					'name' => $category['c4_name'],
-					'href' => $this->url->link('product/category', 'path=' . $category['c2_id'])
+					'href' => $this->url->link('product/category', 'path=' . $category_link)
 				];
 			}
 		}

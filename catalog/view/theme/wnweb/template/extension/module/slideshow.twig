@@ -1,4 +1,4 @@
-<div class="swiper-viewport">
+<div id="slider-principal" class="swiper-viewport">
   <div id="slideshow{{ module }}" class="swiper-container">
     <div class="swiper-wrapper"> {% for banner in banners %}
       <div class="swiper-slide text-center">{% if banner.link %}<a href="{{ banner.link }}"><img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" /></a>{% else %}<img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />{% endif %}</div>

@@ -1,5 +1,22 @@
+@charset "UTF-8";
+:root {
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-size: 1rem;
   font-weight: 400;
   color: #667;
   font-size: 14px;
@@ -1098,5 +1115,76 @@ footer .fa {
 }
 
 #slideshow0 * img {
-  margin: auto;
+  margin: auto !important;
+  margin-top: -58px !important;
 }
+
+#slider-principal {
+  border-top: 4px solid #3f3f3f !important;
+  margin-top: -18px !important;
+  max-height: 320px;
+  overflow: hidden;
+}
+
+.swiper-pagination-bullet {
+  margin-bottom: 30px !important;
+}
+
+.menu-level-3 {
+  width: 30.33%;
+  float: left;
+  min-height: 200px;
+}
+
+.menu-level-3 * li {
+  list-style: none !important;
+  list-style-type: none !important;
+  margin-bottom: 7px;
+}
+.link-nivel-4,
+.menu-level-3 * li a {
+  font-weight: normal !important;
+  font-size: 16px;
+  color: #aaa;
+  margin-left: -24px;
+}
+
+.li-nivel-4 {
+  list-style: none !important;
+}
+
+.menu-level-3,
+.menu-level-3 * li:hover {
+  background-color: none !important;
+}
+
+.label-level-3 {
+  margin-left: 15px;
+  margin-top: 10px;
+}
+
+.li-nivel-4 {
+  margin-bottom: 10px;
+  text-align: left;
+}
+.link-nivel-4:hover {
+  background-color: transparent !important;
+  color: #ffd733 !important;
+  text-decoration: underline !important;
+}
+
+/*
+.swiper-viewport {
+  margin-top: -18px !important;
+}
+
+
+.swiper-slide {
+  margin-top: -4%;
+  max-height: 380px !important;
+}
+
+.swiper-pagination-bullet {
+  display: none !important;
+}
+*/
