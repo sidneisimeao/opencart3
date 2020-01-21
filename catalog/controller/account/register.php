@@ -1,4 +1,7 @@
 <?php
+
+use GuzzleHttp\Client;
+
 class ControllerAccountRegister extends Controller
 {
 	private $error = array();
@@ -26,11 +29,32 @@ class ControllerAccountRegister extends Controller
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 
+			// CNPJ
+			$customFieldCNPJ = $this->request->post['custom_field']['account'][1];
+
+			$data = [];
+			$data['cnpj'] = $customFieldCNPJ;
+			$data['customer'] = [
+				'firstname' => $this->request->post['firstname']
+			];
+
+
+			/*
+			 {
+				"cnpj": "02.476.492/0001-11",
+				"customer": {
+					"firstname": "JULIO CESAR GUIRALDELLI"
+				}
+			}
+			 */
+			print '<pre>';
+			print_r(json_encode($data));
+			exit;
+
 			// Grava o cliente
 			$customer_id = $this->model_account_customer->addCustomer($this->request->post);
 
-			// CNPJ
-			$customFieldCNPJ = $this->request->post['custom_field']['account'][1];
+
 
 			// Grava o CNPJ
 			$this->model_account_customer_document->addCustomerDocument($customer_id, $customFieldCNPJ);
