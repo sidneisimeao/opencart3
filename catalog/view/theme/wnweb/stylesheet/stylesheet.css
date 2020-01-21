@@ -1,7 +1,7 @@
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  color: #666;
+  color: #667;
   font-size: 14px;
   line-height: 18px;
   width: 100%;
@@ -1088,4 +1088,15 @@ footer .fa {
 .no-dropdown:hover {
   color: white;
   text-decoration: underline !important;
+}
+
+.thumbnail a > img,
+.thumbnail > img {
+  display: none !important;
+  max-width: 100%;
+  height: auto;
+}
+
+#slideshow0 * img {
+  margin: auto;
 }
